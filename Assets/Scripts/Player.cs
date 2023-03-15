@@ -9,12 +9,16 @@ public class Player : MonoBehaviour
     public int hearth;
     public int life;
 
+    private bool canJumping;
+    private bool unlockDoubleJump;
+    private bool canDoubleJump;
 
     private Rigidbody2D rigidbodyPlayer;
     private Animator animatorPlayer;
     // Start is called before the first frame update
     void Start()
     {
+        unlockDoubleJump = false;
         rigidbodyPlayer= GetComponent<Rigidbody2D>();
         animatorPlayer = GetComponent<Animator>();
     }
@@ -23,6 +27,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         Move();
+        Jump();
     }
 
     void Move()
@@ -43,6 +48,25 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
+        if (Input.GetButtonDown("Jump") && canDoubleJump && unlockDoubleJump)
+        {
+            rigidbodyPlayer.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            canDoubleJump = false;
+        }
+        if (Input.GetButtonDown("Jump") && canJumping)
+        {
+            rigidbodyPlayer.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            canJumping= false;
+            canDoubleJump= true;
+        }
+    }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer==3)
+        {
+            canJumping= true;
+            canDoubleJump= false;
+        }
     }
 }
