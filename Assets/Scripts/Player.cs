@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     {
         unlockDoubleJump = false;
         rigidbodyPlayer= GetComponent<Rigidbody2D>();
-        animatorPlayer = GetComponent<Animator>();
+        animatorPlayer = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -36,18 +36,28 @@ public class Player : MonoBehaviour
         
         rigidbodyPlayer.velocity = new Vector2(movement*speed, rigidbodyPlayer.velocity.y);
 
-        if (movement< 0 )
+        if (movement< 0 && canJumping)
         {
             transform.eulerAngles = new Vector3(0,180,0);
+            animatorPlayer.SetInteger("Transition", 1);
         }
-        if (movement>0)
+        if (movement>0 && canJumping)
         {
             transform.eulerAngles = new Vector3(0,0,0);
+            animatorPlayer.SetInteger("Transition", 1);
+        }
+        if (movement==0 && canJumping)
+        {
+            animatorPlayer.SetInteger("Transition", 0);
         }
     }
 
     void Jump()
     {
+        if (!canJumping)
+        {
+            animatorPlayer.SetInteger("Transition", 2);
+        }
         if (Input.GetButtonDown("Jump") && canDoubleJump && unlockDoubleJump)
         {
             rigidbodyPlayer.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
