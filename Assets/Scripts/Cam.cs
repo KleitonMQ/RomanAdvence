@@ -10,7 +10,7 @@ public class Cam : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;    
+        player = GameObject.FindGameObjectWithTag(nameof(Player)).transform;    
     }
 
     // Update is called once per frame
@@ -21,7 +21,6 @@ public class Cam : MonoBehaviour
         if (transform.position.x >= 0)
         {
             //following = new Vector3(player.position.x, transform.position.y, player.position.z);
-            Debug.Log(player);
             //O Vector3.Lerp, é uma forma de seguir um ponto de forma menos brusca. Dessa forma, ele recebe 3 parametros, um da posição inicial do movimento, um da posical que ele deveria chegar e por ultimo o tempo que ele deveria levar pra acompanhar.
             transform.position = Vector3.Lerp(transform.position, following, smooth * Time.deltaTime);
         }
