@@ -16,6 +16,11 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D rigidbodyPlayer;
     private Animator animatorPlayer;
+
+
+    public GameObject arrow;
+    public Transform firePoint;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,6 +100,9 @@ public class Player : MonoBehaviour
             isFire = true;
             animatorPlayer.SetInteger("Transition", 3);
             yield return new WaitForSeconds(0.3f);
+            GameObject Arrow = Instantiate(arrow, firePoint.position, firePoint.rotation);
+            
+                
             isFire = false;
         }
     }
